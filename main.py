@@ -8,7 +8,7 @@ from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 
 
-
+Window.size = (800, 600) 
 
 class MainScreen(Screen):
     def go_to_game_selection(self, *args):
@@ -51,17 +51,31 @@ class GameSelectionScreen(Screen):
         layout.add_widget(football_button)
 
 
+
+
 class BasketballScreen(Screen):
+
+    def go_to_game_basketball_back(self, *args):
+        self.manager.current = 'game_selection'
+
+
     def __init__(self, **kwargs):
         super(BasketballScreen, self).__init__(**kwargs)
         layout = FloatLayout()
         self.add_widget(layout)
 
 
-        self.background = Image(source = '.png', size_hint=(1,1))
+
+
+        basketball_button_back = Button(text='повернутись', font_size='54sp', size_hint=(1, 0.2))
+        basketball_button_back.bind(on_press=self.go_to_game_basketball_back)
+        layout.add_widget(basketball_button_back)
+
+
+        self.background = Image(source = 'img_2.png', size_hint=(1,1))
         layout.add_widget(self.background)
 
-        self.ball = Image(source = '.png',)
+        self.ball = Image(source = 'ball.png',)
 
 
 
@@ -74,6 +88,7 @@ class ClickerApp(App):
         sm = ScreenManager()
         sm.add_widget(MainScreen(name='main'))
         sm.add_widget(GameSelectionScreen(name='game_selection'))
+        sm.add_widget(BasketballScreen(name='basketball'))
 
 
         return sm
@@ -99,7 +114,9 @@ class Myapp(App):
         box_button = BoxLayout()
         box_button1 = BoxLayout(orientation = "vertical", padding=8, spacing=8)
 
-Window.size(1200, 900)
+
+
+
 
 app = Myapp()
 app.run()
