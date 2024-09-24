@@ -1,13 +1,19 @@
+import random
+
 from kivy.app import App
 from kivy.properties import NumericProperty
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager, Screen,FadeTransition
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.animation import Animation
+
+from kivy.uix.widget import Widget
+from kivy.graphics import Ellipse, Line, Color
+from random import randint
 
 
 Window.size = (800, 600) 
@@ -41,6 +47,7 @@ class GameSelectionScreen(Screen):
 
     def go_to_game_hockey(self, *args):
         self.manager.current = 'hockey'
+
 
     def __init__(self, **kwargs):
         super(GameSelectionScreen, self).__init__(**kwargs)
@@ -96,6 +103,8 @@ class BasketballScreen(Screen):
         layout.add_widget(basketball_button_back)
 
 
+
+
     def ball_clicked(self, instance, touch):
         if instance.collide_point(*touch.pos):
             self.score += 1
@@ -105,6 +114,8 @@ class BasketballScreen(Screen):
     def ball_click_animation(self):
         anim = Animation(size=(150, 150), duration = 0.3) + Animation(size=(100,100), duration=0.3)
         anim.start(self.ball)
+
+
 
 
 class HockeyballScreen(Screen):
@@ -148,7 +159,7 @@ class HockeyballScreen(Screen):
             self.ball_click_animation()
 
     def ball_click_animation(self):
-        anim = Animation(size=(150, 150), duration = 0.3) + Animation(size=(100,100), duration=0.3)
+        anim = Animation(size=(150, 150),opacity=0.5, duration=0.3) + Animation(size=(100, 100),opacity=1, duration=0.3)
         anim.start(self.ball)
 
 
@@ -194,22 +205,23 @@ class FootballScreen(Screen):
             self.ball_click_animation()
 
     def ball_click_animation(self):
-        anim = Animation(size=(150, 150), duration = 0.3) + Animation(size=(100,100), duration=0.3)
+        anim = Animation(pos=(80, 10))
+        anim = Animation(size=(300, 300), duration=1) + Animation(size=(100,100),pos=(400, 300), duration=1)
         anim.start(self.ball)
-
-
 
 
 
 
 class ClickerApp(App):
     def build(self):
-        sm = ScreenManager()
+
+        sm = ScreenManager(transition=FadeTransition())
         sm.add_widget(MainScreen(name='main'))
         sm.add_widget(GameSelectionScreen(name='game_selection'))
         sm.add_widget(BasketballScreen(name='basketball'))
         sm.add_widget(FootballScreen(name="football"))
         sm.add_widget(HockeyballScreen(name="hockey"))
+
 
 
         return sm
